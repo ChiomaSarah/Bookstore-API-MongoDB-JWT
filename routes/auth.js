@@ -77,6 +77,6 @@ router.get("/jwt-test", middleware.verify, (req, res) => {
   res.status(200).json(user);
 });
 function generateToken(user) {
-  return jwt.sign({ data: user }, tokenSecret, { expiresIn: "25m" });
+  return jwt.sign({ data: user }, tokenSecret, { expiresIn: "5m" });
 }
 module.exports = router;
