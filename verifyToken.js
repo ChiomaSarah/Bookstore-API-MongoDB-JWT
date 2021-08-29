@@ -3,18 +3,20 @@ const jwt = require("jsonwebtoken");
 const tokenSecret = process.env.TOKEN_SECRET;
 
 exports.verify = (req, res, next) => {
-  const token = req.headers.authorization;
-  if (!token) res.status(403).json({ error: "Please provide a token." });
-  else {
+  try {
+    const token = req.headers.authorization;
+
+    // const user = res.locals.loggedInUser;
     jwt.verify(token.split(" ")[1], tokenSecret, (err, user) => {
       if (err)
-        res
+        return res
           .status(401)
-          .json({
-            error: "Your login session has expired! Kindly log in again.",
-          });
+          .json({ error: "Unauthorized access... Kindly login." });
+
       req.user = user.data;
       next();
     });
+  } catch (error) {
+    next(error);
   }
 };

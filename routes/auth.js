@@ -55,15 +55,15 @@ router.post("/login", jsonParser, async (req, res) => {
         bcrypt.compare(req.body.password, user.password, (error, match) => {
           if (error) {
             res.status(500).json(error);
-          } else if (match) {
-            res.status(200).json({message: "Success!", token: generateToken(user), user });
-          } else {
+          }
+          if (match) {
             res
-              .status(400)
-              .json({
-                error:
-                  "Passwords do not match... Kindly enter a valid password!",
-              });
+              .status(200)
+              .json({ message: "Success!", token: generateToken(user), user });
+          } else {
+            res.status(400).json({
+              error: "Passwords do not match... Kindly enter a valid password!",
+            });
           }
         });
       }
@@ -73,10 +73,7 @@ router.post("/login", jsonParser, async (req, res) => {
   }
 });
 
-router.get("/jwt-test", middleware.verify, (req, res) => {
-  res.status(200).json(user);
-});
 function generateToken(user) {
-  return jwt.sign({ data: user }, tokenSecret, { expiresIn: "5m" });
+  return jwt.sign({ data: user }, tokenSecret, { expiresIn: "30m" });
 }
 module.exports = router;
