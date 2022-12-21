@@ -8,6 +8,11 @@ const app = express();
 const authRouter = require("./routes/auth");
 const apiRouter = require("./routes/api");
 
+const cors = require("cors");
+
+
+app.use(cors("*"));
+
 app.use("/auth/", authRouter);
 app.use("/books", apiRouter);
 
